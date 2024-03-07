@@ -2,7 +2,13 @@ package no.ntnu.idatx2003.oblig3.cardgame;
 
 import java.util.ArrayList;
 
-public class HandRanker {
+public class Hand {
+
+  private DeckOfCards deck = new DeckOfCards();
+
+  public ArrayList<PlayingCard> dealHand() {
+    return deck.dealHand(5);
+  }
 
   public static boolean checkForFlush(ArrayList<PlayingCard> hand) {
     boolean flush = false;
@@ -42,5 +48,16 @@ public class HandRanker {
     }
 
     return hearts;
+  }
+
+  public boolean checkForQos(ArrayList<PlayingCard> hand) {
+    boolean QueenOfSpades = false;
+    for (PlayingCard playingCard : hand) {
+      if (playingCard.getAsString().equals("S12")) {
+        QueenOfSpades = true;
+      }
+    }
+
+    return QueenOfSpades;
   }
 }
