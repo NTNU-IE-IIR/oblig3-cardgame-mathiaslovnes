@@ -1,6 +1,8 @@
 package no.ntnu.idatx2003.oblig3.cardgame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 
@@ -24,15 +26,21 @@ import javafx.stage.Stage;
 public class CardGameUI extends Application {
 
   private CardGameController controller;
-  ArrayList<PlayingCard> cards;
+  private Map<String, Label> handStrengthLabels;
+
+  private ArrayList<ImageView> cardImageView;
+  private FlowPane cardsPane;
 
 
   public void start(Stage stage) throws Exception {
     this.controller = new CardGameController(this);
-
+    this.cardImageView = new ArrayList<>();
+    this.handStrengthLabels = new HashMap<>();
+    this.cardsPane = new FlowPane();
+    fillCardPaneWithJokers();
 
     BorderPane rootNode = new BorderPane();
-    Scene scene = new Scene(rootNode, 1000, 750, Color.WHITE);
+    Scene scene = new Scene(rootNode, 1500, 1000, Color.WHITE);
     scene.setFill(Color.PURPLE);
     rootNode.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 
@@ -78,12 +86,18 @@ public class CardGameUI extends Application {
     VBox vBoxButtons = new VBox();
     vBoxButtons.setAlignment(Pos.CENTER_RIGHT);
     Button dealHand = new Button("Deal Hand");
-    dealHand.setOnAction(event -> controller.dealHand());
+    dealHand.setOnAction(event -> {
+      controller.dealHand();
+      createCardView(controller.getHand());
+    });
 
 
     dealHand.setPrefSize(100, 50);
     Button checkHand = new Button("Check Hand");
-    checkHand.setOnAction(event -> controller.checkHand());
+    checkHand.setOnAction(event ->
+        controller.checkHand());
+
+
     checkHand.setPrefSize(100, 50);
     vBoxButtons.setPadding(new Insets(20));
     vBoxButtons.setSpacing(20);
@@ -92,28 +106,31 @@ public class CardGameUI extends Application {
     rootNode.setRight(vBoxButtons);
 
 
-    BorderPane.setAlignment(tableView, Pos.CENTER);
 
 
     GridPane gridPane = new GridPane();
 
     // Heart
     Label heartLabel = new Label("Hearts");
+    handStrengthLabels.put("Hearts", heartLabel);
     heartLabel.setMaxSize(100, 15);
     heartLabel.setAlignment(Pos.BOTTOM_CENTER);
 
     // Flush
     Label flushLabel = new Label("Flush");
+    handStrengthLabels.put("Flush", flushLabel);
     flushLabel.setMinSize(100, 15);
     flushLabel.setAlignment(Pos.BOTTOM_CENTER);
 
     // Sum
     Label sumLabel = new Label("Sum");
+    handStrengthLabels.put("Sum", sumLabel);
     sumLabel.setMaxSize(100, 15);
     sumLabel.setAlignment(Pos.BOTTOM_CENTER);
 
     // Queen of spades
     Label qosLabel = new Label("Queen of spades");
+    handStrengthLabels.put("Queen of Spades", qosLabel);
     qosLabel.setMaxSize(100, 15);
     qosLabel.setAlignment(Pos.BOTTOM_CENTER);
 
@@ -126,13 +143,9 @@ public class CardGameUI extends Application {
     gridPane.add(sumView, 2, 1);
     gridPane.add(sumLabel, 3, 1);
 
-    FlowPane cardsPane = new FlowPane();
-    ImageView card = new ImageView("cards_images/1D.png");
-    ImageView card2 = new ImageView("cards_images/2D.png");
-    card.setFitWidth(100); // Adjust the desired width
-    card.setFitHeight(145); // Adjust the desired height
 
-    cardsPane.getChildren().add(card);
+
+
     cardsPane.setPrefSize(200, 200);
     cardsPane.setMaxHeight(200);
 
@@ -143,7 +156,7 @@ public class CardGameUI extends Application {
     rootNode.setBottom(gridPane);
     gridPane.setAlignment(Pos.BOTTOM_CENTER);
     rootNode.getBottom().prefHeight(400);
-    rootNode.getRight().setStyle("-fx-background-color: Green");
+    // rootNode.getRight().setStyle("-fx-background-color: Green");
     gridPane.setVgap(10);
     gridPane.setPadding(new Insets(10));
 
@@ -154,12 +167,31 @@ public class CardGameUI extends Application {
 
   }
 
-  public void setCards(ArrayList<PlayingCard> cards) {
-    this.cards = cards;
+  private void fillCardPaneWithJokers() {
+    for (int i = 0; i < 5; i++) {
+      ImageView joker = new ImageView("cards_images/joker.png");
+      joker.setFitHeight(300);
+      joker.setFitWidth(200);
+      cardsPane.getChildren().add(joker);
+    }
+  }
+
+  public void createCardView(ArrayList<PlayingCard> cards) {
+    cardsPane.getChildren().clear();
+    for (int i = 0; i < cards.size(); i++) {
+      ImageView cardImageView = new ImageView("cards_images/" + cards.get(i).getAsString() + ".png");
+      cardImageView.setFitHeight(300);
+      cardImageView.setFitWidth(200);
+      cardImageView.setPreserveRatio(true);
+      cardsPane.getChildren().add(cardImageView);
+    }
+  }
+
+  public void setHandStrengthLabels(String label, String value) {
+    handStrengthLabels.get(label).setText(value);
   }
 
   public static void appMain(String[] args) {
     launch();
   }
-
 }

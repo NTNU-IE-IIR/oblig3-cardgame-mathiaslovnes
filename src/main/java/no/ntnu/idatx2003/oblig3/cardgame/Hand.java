@@ -4,17 +4,24 @@ import java.util.ArrayList;
 
 public class Hand {
 
-  private DeckOfCards deck = new DeckOfCards();
+  private DeckOfCards deck;
+  private ArrayList<PlayingCard> hand;
 
-  public ArrayList<PlayingCard> dealHand() {
-    return deck.dealHand(5);
+  public Hand() {
+    deck = new DeckOfCards();
+
+    hand = deck.dealHand(5);
   }
 
-  public static boolean checkForFlush(ArrayList<PlayingCard> hand) {
+  public ArrayList<PlayingCard> getHand() {
+    return this.hand;
+  }
+
+  public boolean checkForFlush() {
     boolean flush = false;
     int noOfSameSuit = 1;
     for (int i = 0 ; i < 4 ; i++) {
-    if(hand.get(i).getSuit() == hand.get(i+1).getSuit()) {
+    if(this.hand.get(i).getSuit() == this.hand.get(i+1).getSuit()) {
       noOfSameSuit++;
       if (noOfSameSuit == 5) {
         flush = true;
@@ -25,18 +32,18 @@ public class Hand {
     return flush;
   }
 
-  public static int checkSumOfFaces(ArrayList<PlayingCard> hand) {
+  public int checkSumOfFaces() {
     int sumOfFaces = 0;
-    for (PlayingCard playingCard : hand) {
+    for (PlayingCard playingCard : this.hand) {
       sumOfFaces += playingCard.getFace();
     }
     System.out.println(sumOfFaces);
     return sumOfFaces;
   }
 
-  public static String checkForHearts(ArrayList<PlayingCard> hand) {
+  public String checkForHearts() {
     String hearts = "";
-    for (PlayingCard card : hand) {
+    for (PlayingCard card : this.hand) {
       char h = 'H';
       if (card.getSuit() == h) {
         hearts = hearts.concat(card.getAsString()) + " ";
@@ -50,9 +57,9 @@ public class Hand {
     return hearts;
   }
 
-  public boolean checkForQos(ArrayList<PlayingCard> hand) {
+  public boolean checkForQos() {
     boolean QueenOfSpades = false;
-    for (PlayingCard playingCard : hand) {
+    for (PlayingCard playingCard : this.hand) {
       if (playingCard.getAsString().equals("S12")) {
         QueenOfSpades = true;
       }
