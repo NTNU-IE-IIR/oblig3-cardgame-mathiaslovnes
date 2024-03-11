@@ -30,6 +30,8 @@ public class CardGameUI extends Application {
 
   private ArrayList<ImageView> cardImageView;
   private FlowPane cardsPane;
+  private Label handsSinceFlush;
+  private Label Unluckiness;
 
 
   public void start(Stage stage) throws Exception {
@@ -38,6 +40,7 @@ public class CardGameUI extends Application {
     this.handStrengthLabels = new HashMap<>();
     this.cardsPane = new FlowPane();
     fillCardPaneWithJokers();
+    // fillCardPaneWithFlush();
 
     BorderPane rootNode = new BorderPane();
     Scene scene = new Scene(rootNode, 1500, 1000, Color.WHITE);
@@ -173,6 +176,16 @@ public class CardGameUI extends Application {
       joker.setFitHeight(300);
       joker.setFitWidth(200);
       cardsPane.getChildren().add(joker);
+    }
+  }
+
+  private void fillCardPaneWithFlush() {
+    for (int i = 1; i <= 5; i++) {
+      ImageView cardImageView = new ImageView("cards_images/" + i +"D" + ".png");
+      cardImageView.setFitHeight(300);
+      cardImageView.setFitWidth(200);
+      cardImageView.setPreserveRatio(true);
+      cardsPane.getChildren().add(cardImageView);
     }
   }
 

@@ -23,10 +23,10 @@ public class Hand {
     for (int i = 0 ; i < 4 ; i++) {
     if(this.hand.get(i).getSuit() == this.hand.get(i+1).getSuit()) {
       noOfSameSuit++;
-      if (noOfSameSuit == 5) {
-        flush = true;
-        }
       }
+    }
+    if (noOfSameSuit == 5) {
+      flush = true;
     }
     System.out.println(flush);
     return flush;
