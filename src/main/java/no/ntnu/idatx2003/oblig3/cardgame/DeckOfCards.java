@@ -31,7 +31,6 @@ public class DeckOfCards {
       PlayingCard playingCard = deck.get(rand.nextInt(0, deck.size()));
       dealtHand.add(playingCard);
       deck.remove(playingCard);
-      System.out.println(playingCard.getAsString());
     }
     return dealtHand;
   }

@@ -2,6 +2,9 @@ package no.ntnu.idatx2003.oblig3.cardgame;
 
 import java.util.ArrayList;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Hand {
 
   private DeckOfCards deck;
@@ -17,54 +20,43 @@ public class Hand {
     return this.hand;
   }
 
-  public boolean checkForFlush() {
+  public boolean checkForFlush2() {
     boolean flush = false;
     int noOfSameSuit = 1;
-    for (int i = 0 ; i < 4 ; i++) {
-    if(this.hand.get(i).getSuit() == this.hand.get(i+1).getSuit()) {
-      noOfSameSuit++;
+    for (int i = 0; i < 4; i++) {
+      if (this.hand.get(i).getSuit() == this.hand.get(i + 1).getSuit()) {
+        noOfSameSuit++;
       }
     }
     if (noOfSameSuit == 5) {
       flush = true;
     }
-    System.out.println(flush);
     return flush;
   }
 
+  public boolean checkForFlush() {
+    return this.hand.stream()
+        .map(PlayingCard::getSuit)
+        .distinct()
+        .count() < 2;
+  }
+
   public int checkSumOfFaces() {
-    int sumOfFaces = 0;
-    for (PlayingCard playingCard : this.hand) {
-      sumOfFaces += playingCard.getFace();
-    }
-    System.out.println(sumOfFaces);
-    return sumOfFaces;
+    return this.hand.stream()
+        .map(PlayingCard::getFace)
+        .reduce(0, Integer::sum);
   }
 
   public String checkForHearts() {
-    String hearts = "";
-    for (PlayingCard card : this.hand) {
-      char h = 'H';
-      if (card.getSuit() == h) {
-        hearts = hearts.concat(card.getAsString()) + " ";
-      }
-    }
-
-    if (hearts.isBlank()) {
-      hearts = "No Hearts";
-    }
-
-    return hearts;
+    return this.hand.stream()
+        .filter(c -> c.getSuit() == 'H')
+        .map(PlayingCard::getAsString)
+        .collect(Collectors.joining(", "));
   }
 
   public boolean checkForQos() {
-    boolean QueenOfSpades = false;
-    for (PlayingCard playingCard : this.hand) {
-      if (playingCard.getAsString().equals("S12")) {
-        QueenOfSpades = true;
-      }
-    }
-
-    return QueenOfSpades;
+    return this.hand.stream()
+        .anyMatch(c -> c.getSuit() == 'S' && c.getFace() == 12);
   }
+
 }
