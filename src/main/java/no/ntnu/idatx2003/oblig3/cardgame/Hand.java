@@ -38,7 +38,7 @@ public class Hand {
     return this.hand.stream()
         .map(PlayingCard::getSuit)
         .distinct()
-        .count() < 2;
+        .count() == 1;
   }
 
   public int checkSumOfFaces() {
