@@ -180,13 +180,7 @@ public class CardGameUI extends Application {
   }
 
   private void fillCardPaneWithFlush() {
-    for (int i = 1; i <= 5; i++) {
-      ImageView cardImageView = new ImageView("cards_images/" + i +"D" + ".png");
-      cardImageView.setFitHeight(300);
-      cardImageView.setFitWidth(200);
-      cardImageView.setPreserveRatio(true);
-      cardsPane.getChildren().add(cardImageView);
-    }
+
   }
 
   public void createCardView(ArrayList<PlayingCard> cards) {
